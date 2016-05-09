@@ -1,16 +1,12 @@
 # CESA
 CESAのゲーム
+
 テーマ「流」
+
 流れ（flow）→溢れる、湧き出る
 
-Sceneの内容
+ガントチャート
 
-・Scene.h
+pass:tsit
 
-・SceneManager.h/.cpp
-
-・Playscene.h/.cpp
-
-・TitleScene.h/.cpp
-
-・ChangeScene.h
+http://minna-de-gantt.com/gantt/main/?cid=R1PRwuQR57

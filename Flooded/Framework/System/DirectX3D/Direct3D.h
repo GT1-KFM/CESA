@@ -32,7 +32,7 @@ class Direct3D final
 {
 	// メンバ変数 ----------------------------------------------
 private:
-	HWND m_hWindow;   //!< ウィンドウハンドル
+	//HWND m_hWindow;   //!< ウィンドウハンドル
 
 	// Direct3Dオブジェクト
 	ComPtr<ID3D11Device>           m_pDevice = nullptr;   //!< デバイス
@@ -172,7 +172,7 @@ private:
 	{
 		// レンダーターゲットのサイズの算出
 		RECT clientArea;
-		GetClientRect(m_hWindow, &clientArea);
+		GetClientRect(Window::, &clientArea);
 
 		m_renderTargetWidth = clientArea.right - clientArea.left;
 		m_renderTargetHeight = clientArea.bottom - clientArea.top;

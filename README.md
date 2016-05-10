@@ -10,3 +10,5 @@ CESAのゲーム
 pass:tsit
 
 http://minna-de-gantt.com/gantt/main/?cid=R1PRwuQR57
+
+git config --global http.proxy proxy.tc.kawai-juku.ac.jp:3128

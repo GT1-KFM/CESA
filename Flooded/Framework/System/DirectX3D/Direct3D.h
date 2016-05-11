@@ -16,6 +16,7 @@
 
 // ヘッダファイルの読み込み ================================================
 #include <Windows.h>
+#include "Window.h"
 
 #include <d3d11.h>
 
@@ -28,11 +29,11 @@
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 //! @brief Direct3Dクラス
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-class Direct3D final
+class Direct3D 
 {
 	// メンバ変数 ----------------------------------------------
 private:
-	//HWND m_hWindow;   //!< ウィンドウハンドル
+	HWND m_hWindow;   //!< ウィンドウハンド
 
 	// Direct3Dオブジェクト
 	ComPtr<ID3D11Device>           m_pDevice = nullptr;   //!< デバイス
@@ -51,9 +52,8 @@ private:
 
 	// コンストラクタ ------------------------------------------
 private:
-	Direct3D()
-	{
-	}
+	Direct3D() = default;
+	
 
 
 
@@ -70,9 +70,11 @@ public:
 	// DrirectX3Dオブジェクトへのアドレスを取得する
 	static Direct3D* GetInstance()
 	{
+		// 空だった場合Direct3Dを作成する
 		if (m_pDirect3D == nullptr)
 		{
-			m_pDirect3D = new Direct3D();
+			// Direct3Dを作成する
+			m_pDirect3D = Direct3D::Create(Window::GetInstance()->GetHandle());
 		}
 
 		return m_pDirect3D;
@@ -136,7 +138,7 @@ private:
 #endif
 
 
-															  // サポートされるDirectXハードウェア機能レベルのセットの定義(順番に注意)											  // サポートされるDirectXハードウェア機能レベルのセットの定義(順番に注意)
+		// サポートされるDirectXハードウェア機能レベルのセットの定義(順番に注意)											  // サポートされるDirectXハードウェア機能レベルのセットの定義(順番に注意)
 		D3D_FEATURE_LEVEL featureLevels[] =
 		{
 			D3D_FEATURE_LEVEL_11_1,
@@ -170,9 +172,10 @@ private:
 	// ウィンドウサイズに依存するリソースの作成
 	void CreateWindowSizeDependentResources()
 	{
+	
 		// レンダーターゲットのサイズの算出
 		RECT clientArea;
-		GetClientRect(Window::, &clientArea);
+		GetClientRect(Window::GetInstance()->GetHandle(), &clientArea);
 
 		m_renderTargetWidth = clientArea.right - clientArea.left;
 		m_renderTargetHeight = clientArea.bottom - clientArea.top;
@@ -309,31 +312,32 @@ private:
 	}
 
 	// 初期化
-	void Initialize(HWND hWindow)
+	HRESULT Initialize(HWND hWindow)
 	{
-		m_hWindow = Window::GetInstance()->GetHandle();
+		m_hWindow = hWindow;
 
 
-		// リソースの作成
+		// デバイスリソースの作成
 		CreateDeviceResources();
+		// ウィンドウサイズリソースの作成
 		CreateWindowSizeDependentResources();
 
 
-		
+		return S_OK;
 	}
 
 
 
-	// クラス実装 ----------------------------------------------
-public:
-	// ファクトリメソッド
+	// Direct3Dを作成
 	static Direct3D* Create(HWND hWindow)
 	{
 		// Direct3Dオブジェクトの生成
 		Direct3D* pDirect3D = new Direct3D();
 
+
 		if (!pDirect3D)
 		{
+			// Direct3Dオブジェクトの生成に失敗
 			return nullptr;
 		}
 
@@ -341,13 +345,15 @@ public:
 		// 初期化
 		if (FAILED(pDirect3D->Initialize(hWindow)))
 		{
+			// Direct3Dを破棄
 			delete pDirect3D;
+			// Direct3Dオブジェクトの生成に失敗
 			return nullptr;
 		}
 
 
 		// Direct3Dオブジェクトの生成に成功
 		return pDirect3D;
-	}
+	}	
 
 };

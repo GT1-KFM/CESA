@@ -7,7 +7,6 @@ CESAのゲーム
 
 ガントチャート
 
-pass:tsit
 
 http://minna-de-gantt.com/gantt/main/?cid=R1PRwuQR57
 
